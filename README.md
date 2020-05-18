@@ -4,7 +4,7 @@ Blender-2.8-MD5-import-export-addon
 Based on the io_scene_md5.py script by nemyax.
 
 
-#MD5 Importer/Exporter for Blender 2.80+
+# MD5 Importer/Exporter for Blender 2.80+
 
 Installation	2
 Before you begin: Collections	2
