@@ -329,14 +329,23 @@ The script can detect a few situations where MD5 export is not possible, and pop
 The following problems are reported:
 
 • No armature-deformable meshes in the selection
+
 • The selected meshes are deformed by more than one armature
+
 • No deforming armature is associated with the selection
+
 • The deforming armature has no bones in the reserved layer
+
 • One or more exportable bones have parents outside the reserved layer
+
 • Multiple root bones
+
 • Vertices without deformation weights
+
 • Vertices with deformation weights set to zero
+
 • No UV coordinates in a mesh
+
 
 The last three checks are not done for individual .md5anim export. This lets you use meshes that have these characteristics (for example, if you want custom bounds in your animation).
 For problem-free export, address the above issues in advance.
