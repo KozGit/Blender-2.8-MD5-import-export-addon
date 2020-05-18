@@ -6,24 +6,27 @@ Based on the io_scene_md5.py script by nemyax.
 
 # MD5 Importer/Exporter for Blender 2.80+
 
-Installation	2
-Before you begin: Collections	2
-.MD5mesh hierarchy in the Outliner	3
-Before you begin: Bone Layers	4
-Importing MD5 Meshes	5
-Importing MD5 Animations	5
-Exporting MD5 Meshes	6
-Exporting Individual MD5 Animations	6
-Exporting MD5 Mesh and Animation(s)	7
+## SECTIONS:
+Installation	
+Before you begin: Collections	
+.MD5mesh hierarchy in the Outliner	
+Before you begin: Bone Layers	
+Importing MD5 Meshes	
+Importing MD5 Animations	
+Exporting MD5 Meshes	
+Exporting Individual MD5 Animations	
+Exporting MD5 Mesh and Animation(s)	
 
-This import/export script provides the following functionality:
+### This import/export script provides the following functionality:
 
-Import:
+#### Import:
+
     • Import .md5mesh file
     • Import .individual md5anim file
     • Batch import multiple .md5anim files simultaneously
 
-Export:
+#### Export:
+
     • Export individual .md5mesh file
     • Export individual .md5anim file
         ◦ All frames, or range delimited by Preview Frame Start/Frame Stop 
@@ -33,12 +36,15 @@ This script script is compatible with Blender 2.80 and later. It was updated to 
 
     • Each .MD5 model ( .md5mesh file ) is treated as a unique Collection in Blender.  
     • Multiple Collections can be used to support editing multiple .md5mesh files
-    • MD5anim files are imported as actions in Blender, which can be accessed via the Dopesheet.  Batch import/export of actions is supported.
+    • MD5anim files are imported as actions in Blender, which can be accessed via the Dopesheet. 
+    • Batch import/export of actions is supported.
     • Only a subset of the armature’s bones are intended for export.
     • Constraints and drivers can be used freely.
     • The character faces positive Y ( optional )
     • Care is taken to keep object transforms applied.
-Installation
+    
+### Installation
+
 Important: If you had a previous version of the script installed, remove it before installation. Use the add-on's Remove button to remove the script, or delete the io_scene_md5 subdirectory manually from your Blender addons directory. For details about the addons directory location, see the Addons page in the Blender wiki.
 
 The script is a single file.
@@ -48,7 +54,7 @@ Install this script as an add-on:
 2. Click Install from File and specify the downloaded io_scene_md5.zip file or the unpacked io_scene_md5.py file.
 3. Enable the ‘Import-Export: id tech 4 MD5 format’ addon. ( Scroll through the list of addons to find ‘Import-Export: id tech 4 MD5 format’.  You can make the search easier by selecting ‘Import-Export’ in the drop down list next to the search field under the ‘Install’ button )
 
-Before you begin: Collections
+### Before you begin: Collections
 
 
 It is important to understand the concept of Collections as used by this script.  Each .MD5mesh file is imported into a new collection named after the .MD5mesh file.  ( e.g importing ‘imp.md5mesh’ will result in a new collection named ‘imp’) All of the meshes in the MD5 model, and it’s armature, will be imported as individual objects inside this collection.  Each collection can contain multiple mesh objects, but can contain only one armature object.  During .MD5mesh export, all objects inside the collection will be exported.
@@ -64,7 +70,7 @@ See the ‘.MD5mesh hierarchy in the Outliner’ diagram further detail
 			
 
 
-.MD5mesh hierarchy in the Outliner 
+### .MD5mesh hierarchy in the Outliner 
 
 
        
