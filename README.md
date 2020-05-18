@@ -96,8 +96,8 @@ See the ‘.MD5mesh hierarchy in the Outliner’ diagram further detail
     5.  Actual Blender mesh (child of blender Mesh Object) imported from .md5mesh file
     
     6.  Blender material applied to the mesh based on the mesh shader name in the imported file.
-    	• This material name will be the shader name included in the exported .md5mesh 
-	  file for this mesh object.  ( Textures can be applied to the material, but only 
+      	• This material name will be the shader name included in the exported .md5mesh
+	  file for this mesh object.  ( Textures can be applied to the material, but only
 	  this material name will be exported. )
 	  
     7.  Armature modifier applied to the object allowing the MD5_Armature object to deform it
@@ -131,7 +131,7 @@ If the reserve layer has been changed during import, or to select a different la
 
 
 
-##Usage
+## Usage
 
 
 ### Importing MD5 Meshes
@@ -140,7 +140,7 @@ If the reserve layer has been changed during import, or to select a different la
 
 #### Options:
 
-    **• Reorient Model** 
+  • Reorient Model
     
         ◦ This option can be used to re-orient a model to face Blender’s Y axis if desired.  
 	  0 Degrees is no rotation, 90 degrees rotates a model facing X to face Y ( 90 deg. C
@@ -148,11 +148,11 @@ If the reserve layer has been changed during import, or to select a different la
 	  you correctly re-orient the model on export, and all the associated animations on 
 	  import and/or export if necessary.
 	  
-    **• Scale**
+  • Scale
     
         ◦ Adjust the scale for all elements in the model
 	
-    **• Bone layer**
+  • Bone layer
     
         ◦ During import, all bones in the model will be marked as a member of this layer.  
 	  During export, all bones are checked to see if they are members of the layer defined 
@@ -180,7 +180,7 @@ If the reserve layer has been changed during import, or to select a different la
 	  
 #### Options:
 
-    **• Reorient Model** 
+  • Reorient Model 
     
         ◦ This option can be used to re-orient a the animations to face Blender’s Y axis if desired.
 	  0 Degrees is no rotation, 90 degrees rotates a model facing X to face Y ( 90 deg. Clockwise 
@@ -188,7 +188,7 @@ If the reserve layer has been changed during import, or to select a different la
 	  re-orient the model on export, and all the associated animations on import and/or export 
 	  if necessary. 
 	
-    **• Scale**
+  • Scale
     
         ◦ Adjust the scale for all elements in the animation
 
@@ -207,13 +207,13 @@ will attempt to import all selected .md5anim files and provide a status report w
 
 #### Options:
 
-    **• Reorient Model **
+  • Reorient Model
     
         ◦ Unlike idTech4, Blender assumes the ‘forward’ direction for character rigs to be positive Y. This 
 	  option can be used to re-orient the mesh to face +X ( idTech ) instead of  +Y axis if desired.  
 	  -90 Degrees rotates from +Y to +X. 0 Degrees is no rotation, 90 degrees rotates from +X to +Y. 
 	  
-    **• Scale**
+  • Scale**
         ◦ Adjust the scale for all elements in the animation
                                   
 
@@ -233,7 +233,7 @@ will attempt to import all selected .md5anim files and provide a status report w
 
 #### Options:
 
-    **• Reorient Model **
+  • Reorient Model
     
         ◦ Unlike idTech4, Blender assumes the ‘forward’ direction for character rigs to be positive Y. 
 	  This option can be used to re-orient the animation to face +X ( idTech ) instead of  +Y axis 
@@ -241,11 +241,15 @@ will attempt to import all selected .md5anim files and provide a status report w
 	  the animation as well. -90 Degrees rotates from +Y to +X. 0 Degrees is no rotation, 90 degrees 
 	  rotates from +X to +Y.  
 
-    **• Scale**
-        ◦ Adjust the scale for all elements in the animation
+  • Scale
+        
+	◦ Adjust the scale for all elements in the animation
 	
-    **• Use timeline Start/End Frames**
-        ◦ Select this to only export the frames indicated by the timeline/dopesheet ;Start’ and ‘End’ frame fields.
+  • Use timeline Start/End Frames
+  	
+	◦ Select this to only export the frames indicated by the timeline/dopesheet ;Start’ and ‘End’ frame fields.
+
+
 
 Specify the file path and complete the export.
 
@@ -270,8 +274,8 @@ Specify the file path and complete the export.
 
 #### Options:
 
-    **• Export All Anims**
-    
+  • Export All Anims
+  
         ◦ By default, ‘Export MD5 Mesh and Animation(s) only exports the .md5mesh file generated from 
 	  the collection, and the .md5anim file generated from the action currently assigned to the 
 	  armature of the collection.  Enabling this option will export ALL actions/animations for the 
@@ -284,17 +288,17 @@ Specify the file path and complete the export.
 	  
         ◦ All frames in the actions will be exported.
 	
-    **• Strip action name prepend**
+  • Strip action name prepend
     
         ◦ If enabled, collection name prefixes are removed from the exported file names. (e.g. 
 	  action ‘(imp)_walk1.md5anim’ exports to ‘walk1.md5admin’)
 	  
-    **• Use timeline Start/End Frames**
+  • Use timeline Start/End Frames
     
         ◦ Select this to only export the frames indicated by the timeline/dopesheet ;Start’ and
 	  ‘End’ frame fields. Has no effect if ‘Export All Anims’ is selected.
 	  
-    **• Reorient Model **
+  • Reorient Model 
     
         ◦ Unlike idTech4, Blender assumes the ‘forward’ direction for character rigs to be positive Y. 
 	  This option can be used to re-orient the animation to face +X ( idTech ) instead of  +Y axis 
@@ -302,7 +306,7 @@ Specify the file path and complete the export.
 	  the animation as well. -90 Degrees rotates from +Y to +X. 0 Degrees is no rotation, 90 degrees 
 	  rotates from +X to +Y.
 	  
-    **• Scale**
+  • Scale
     
         ◦ Adjust the scale for all elements in the animation
       
