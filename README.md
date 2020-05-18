@@ -213,7 +213,8 @@ will attempt to import all selected .md5anim files and provide a status report w
 	  option can be used to re-orient the mesh to face +X ( idTech ) instead of  +Y axis if desired.  
 	  -90 Degrees rotates from +Y to +X. 0 Degrees is no rotation, 90 degrees rotates from +X to +Y. 
 	  
-  • Scale**
+  • Scale
+  
         ◦ Adjust the scale for all elements in the animation
                                   
 
@@ -322,7 +323,7 @@ During export, the exact material name from the first non-empty material slot fo
 
 During import, a material is added to the new blender mesh’s first material slot with the exact name of the shader in the .md5mesh file.
 
-###Export Errors
+### Export Errors
 
 The script can detect a few situations where MD5 export is not possible, and pops up an error message instead of the file selector if any of them occurs. If you launched Blender from a terminal, the error message is duplicated there. More detail is also available in the Console Window.
 The following problems are reported:
