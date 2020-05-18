@@ -7,14 +7,22 @@ Based on the io_scene_md5.py script by nemyax.
 # MD5 Importer/Exporter for Blender 2.80+
 
 ## SECTIONS:
-Installation	
-Before you begin: Collections	
-.MD5mesh hierarchy in the Outliner	
-Before you begin: Bone Layers	
-Importing MD5 Meshes	
-Importing MD5 Animations	
-Exporting MD5 Meshes	
-Exporting Individual MD5 Animations	
+Installation
+
+Before you begin: Collections
+
+.MD5mesh hierarchy in the Outliner
+
+Before you begin: Bone Layers
+
+Importing MD5 Meshes
+
+Importing MD5 Animations
+
+Exporting MD5 Meshes
+
+Exporting Individual MD5 Animations
+
 Exporting MD5 Mesh and Animation(s)	
 
 ### This import/export script provides the following functionality:
@@ -32,7 +40,7 @@ Exporting MD5 Mesh and Animation(s)
         ◦ All frames, or range delimited by Preview Frame Start/Frame Stop 
     • Batch export of .md5mesh, and either the active action or all actions as .md5anim files.
 
-This script script is compatible with Blender 2.80 and later. It was updated to support  Blender 2.8, Collections, Actions, and batch import/export from a script made for use in the  Arx: End of Sun project. The  workflow for  using this script is as follows:
+This script script is compatible with Blender 2.80 and later. It was updated to support  Blender 2.8, Collections, Actions, and batch import/export from a script made by nemyax for use in the  Arx: End of Sun project. The  workflow for  using this script is as follows:
 
     • Each .MD5 model ( .md5mesh file ) is treated as a unique Collection in Blender.  
     • Multiple Collections can be used to support editing multiple .md5mesh files
@@ -72,7 +80,7 @@ See the ‘.MD5mesh hierarchy in the Outliner’ diagram further detail
 
 ### .MD5mesh hierarchy in the Outliner 
 
-
+![](images/io%20diagram1.png)
        
     1. Collection created from importing ‘imp.md5mesh’
     2. Blender mesh object containing a mesh from a .md5mesh file
