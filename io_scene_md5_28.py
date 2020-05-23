@@ -151,6 +151,7 @@ def do_mesh(md5mesh, s_re, v_re, t_re, w_re, e_re, n_re, ms):
         tvs = [bm.verts[a] for a in map(int, t[1:])]
         try:
             new_f = bm.faces.new(tvs)
+            new_f.normal_flip() #seems normals need to be flipped for 2.8
         except:
             continue
         bm.faces.index_update()
