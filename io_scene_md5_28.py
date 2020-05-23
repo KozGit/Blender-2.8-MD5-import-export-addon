@@ -1,7 +1,7 @@
 bl_info = {
     "name": "id tech 4 MD5 format",
     "author": "nemyax, 2.8 Update: Samson",
-    "version": (1, 8, 20190511),
+    "version": (1, 8, 20190523),
     "blender": (2, 80, 0),
     "location": "File > Import-Export",
     "description": "Import and export md5mesh and md5anim",
@@ -809,8 +809,10 @@ on all the vertices in the mesh, and retry export."""
         """with zero weights assigned.\n
 This can cause adverse effects.\n
 Paint non-zero weights on all the vertices in the mesh,\n
-or use the Clean operation in the weight paint tools,\n
-and retry export."""
+or use the Clean operation in the weight paint tools.\n
+( if using Clean, anything with a weight less 0.000001 \n
+is considered a zero weight, so use this limit in the clean tool)\n
+Please correct zero weights and retry export. """
     elif id == 'no_uvs':
         return "The '" + details[0] + """' object has no UV coordinates.\n
 Valid MD5 data cannot be produced. Unwrap the object\n
@@ -843,6 +845,8 @@ def check_weighting(obj, bm, bones):
             for wgi in influences:
                 if v[weightData][wgi] < 0.000001:
                     zeroWeightVerts += 1
+                    print("Zero Weight %s ( checking against limit of 0.000001 )",v[weightData][wgi])
+                    v.select_set(True)
     return (unweightedVerts, zeroWeightVerts)
 
 def is_export_go(what, collection):
@@ -921,7 +925,7 @@ def manage_bone_layers(doWhat):
 
 def delete_action(prepend,actionNameToDelete):
 
-    
+    print ("Deleting Action prepend: %s, action name %s", prepend, actionNameToDelete)
     ao = bpy.context.active_object
     collection = ao.users_collection[0]
     
