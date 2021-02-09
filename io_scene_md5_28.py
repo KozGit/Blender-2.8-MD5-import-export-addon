@@ -666,16 +666,16 @@ def write_md5anim(filePath, prerequisites, correctionMatrix, previewKeys, frame_
     
     goBack = bpy.context.scene.frame_current
     area = bpy.context.area
-    previous_type = area.type
+    if ( area ):
+        previous_type = area.type
     
     if ( previewKeys ):
         startFrame = bpy.context.scene.frame_preview_start
         endFrame = bpy.context.scene.frame_preview_end
     else:
-                   
         startFrame = int(frame_range[0])
         endFrame = int(frame_range[-1])
-                
+
     bones, meshObjects = prerequisites
     armObj = [o for o in bpy.data.objects if o.data == bones[0].id_data][0]
     pBones = armObj.pose.bones
@@ -852,9 +852,17 @@ def check_weighting(obj, bm, bones):
 
 def is_export_go(what, collection):
     bl = bpy.context.scene.md5_bone_layer - 1
-       
-    meshObjects = [o for o in bpy.data.collections[collection.name].objects
-        if o.data in bpy.data.meshes[:] and o.find_armature()]
+    
+    meshObjects = []
+    
+    #support single mesh export. 
+    #only supported by commandline, normal export is still as documented.
+    if what == 'mesh':
+        meshObjects = [ bpy.context.active_object ]
+    else:
+        meshObjects =[o for o in bpy.data.collections[collection.name].objects
+            if o.data in bpy.data.meshes[:] and o.find_armature()]
+
     armatures = [a.find_armature() for a in meshObjects]
     if not meshObjects:
         return ['no_deformables', None]
@@ -1229,7 +1237,7 @@ class MaybeExportMD5Mesh(bpy.types.Operator):
     def invoke(self, context, event):
         global msgLines, prerequisites
         selection = context.selected_objects
-        
+
         #try the collection of the active object first
         ao = bpy.context.active_object
                 
@@ -1242,7 +1250,7 @@ class MaybeExportMD5Mesh(bpy.types.Operator):
             self.report({'ERROR'}, msgLines)
             return {'CANCELLED'}
             
-        checkResult = is_export_go('mesh', collection)
+        checkResult = is_export_go('meshes', collection)
         if checkResult[0] == 'ok':
             prerequisites = checkResult[-1]
             return bpy.ops.export_scene.md5mesh('INVOKE_DEFAULT')
@@ -1362,6 +1370,17 @@ class ExportMD5Mesh(bpy.types.Operator, ExportHelper):
         return {'RUNNING_MODAL'}
     
     def execute(self, context):
+        global prerequisites
+        #for cmdline export
+        if not prerequisites:
+            #'mesh' only returns the active object.
+            checkResult = is_export_go('mesh',[])
+            if checkResult[0] == 'ok':
+                prerequisites = checkResult[-1]
+            else:
+                msgLines = "No mesh to export.\n Please select an object"
+                self.report({'ERROR'}, msgLines)
+                return {'CANCELLED'}
         
         rotdeg = float(self.reorientDegrees)
         orientationTweak = mu.Matrix.Rotation(math.radians( rotdeg ),4,'Z')
@@ -1423,8 +1442,19 @@ class ExportMD5Anim(bpy.types.Operator, ExportHelper):
         return {'RUNNING_MODAL'}
     
     def execute(self, context):
+        global prerequisites
         
-        #this should all be safe as it was just checked by MaybeExportMD5Anim/is_export_go       
+        #for cmdline export
+        if not prerequisites:
+            checkResult = is_export_go('anim', collection)
+            if checkResult[0] == 'ok':
+                prerequisites = checkResult[-1]
+            else:
+                msgLines = "No anims to export.\n Please select an object"
+                self.report({'ERROR'}, msgLines)
+                return {'CANCELLED'}
+
+        #this should all be safe as it was just checked by MaybeExportMD5Anim/is_export_go
         ao = bpy.context.active_object
         collection = ao.users_collection[0]
         meshObjects = [o for o in bpy.data.collections[collection.name].objects
@@ -1463,9 +1493,7 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
    
     exportAllAnims = BoolProperty(
             name="Export All Anims",
-            description="""Export all actions associated with the object/collection as MD5 anims.
-All keyframes for each action will be exported.
-( This exports all actions in the action editor that are prepended with the object/collection name. )""",
+            description="""Export all actions associated with the object/collection as MD5 anims.\n All keyframes for each action will be exported.\n ( This exports all actions in the action editor that are prepended with the object/collection name. )""",
             default=False,
             )
     stripPrepend = BoolProperty(
@@ -1475,8 +1503,7 @@ All keyframes for each action will be exported.
             )
     previewKeysOnly = BoolProperty(
             name="Use timeline Start/End frames",
-            description="""Only export frames indicated by timeline preview 'Start' and 'End' frames values 
-- otherwise all action frames will be exported.  Has no effect if 'Export All Anims' is selected.""",
+            description="""Only export frames indicated by timeline preview 'Start' and 'End' frames values \n - otherwise all action frames will be exported.  Has no effect if 'Export All Anims' is selected.""",
             default=False,
             )
     
