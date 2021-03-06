@@ -1378,8 +1378,7 @@ class ExportMD5Mesh(bpy.types.Operator, ExportHelper):
             if checkResult[0] == 'ok':
                 prerequisites = checkResult[-1]
             else:
-                msgLines = "No mesh to export.\n Please select an object"
-                self.report({'ERROR'}, msgLines)
+                self.report({'ERROR'}, "\n" + message(checkResult[0],checkResult[1]) )
                 return {'CANCELLED'}
         
         rotdeg = float(self.reorientDegrees)
@@ -1450,8 +1449,7 @@ class ExportMD5Anim(bpy.types.Operator, ExportHelper):
             if checkResult[0] == 'ok':
                 prerequisites = checkResult[-1]
             else:
-                msgLines = "No anims to export.\n Please select an object"
-                self.report({'ERROR'}, msgLines)
+                self.report({'ERROR'}, "\n" + message(checkResult[0],checkResult[1]) )
                 return {'CANCELLED'}
 
         #this should all be safe as it was just checked by MaybeExportMD5Anim/is_export_go
