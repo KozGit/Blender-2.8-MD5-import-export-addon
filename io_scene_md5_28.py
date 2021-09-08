@@ -1602,9 +1602,7 @@ class MessageBox(bpy.types.Operator):
         default = ''
     )
     
-    message2 
-	
-	StringProperty(
+    message2 :  bpy.props.StringProperty(
         name = "message2",
         description = "message2",
         default = ''
