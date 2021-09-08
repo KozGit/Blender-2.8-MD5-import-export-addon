@@ -973,7 +973,7 @@ class ImportMD5Mesh(bpy.types.Operator, ImportHelper):
     path_mode = path_reference_mode
     check_extension = True
         
-    reorientDegrees = bpy.props.EnumProperty(
+    reorientDegrees : bpy.props.EnumProperty(
             items= (('0', '0 Degrees', 'Do not reorient'),    
                     ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
                     ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
@@ -982,14 +982,14 @@ class ImportMD5Mesh(bpy.types.Operator, ImportHelper):
             description = "Degrees to rotate model during import.  Useful to reorient models to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
             default = '0')
                           
-    scaleFactor = bpy.props.FloatProperty(
+    scaleFactor : bpy.props.FloatProperty(
             name="Scale",
             description="Scale all data",
             min=0.01, max=1000.0,
             soft_min=0.01,
             soft_max=1000.0,
             default=1.0)
-    boneLayer = bpy.props.IntProperty(
+    boneLayer : bpy.props.IntProperty(
             name="Bone Layer",
             description="Bones will be assigned to this layer. If changed, remember that only bones in the layer defined in the 'Object Data Properties' of the armature will be exported, so make sure they match.",
             min=1, max=32,
@@ -1101,7 +1101,7 @@ class ImportMD5Anim(bpy.types.Operator, ImportHelper):
             default=True,
             )
             
-    reorientDegrees = bpy.props.EnumProperty(
+    reorientDegrees : bpy.props.EnumProperty(
             items= (('0', '0 Degrees', 'Do not reorient'),    
                     ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
                     ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
@@ -1110,7 +1110,7 @@ class ImportMD5Anim(bpy.types.Operator, ImportHelper):
             description = "Degrees to rotate animation during import.  Useful to reorient to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
             default = '0')
     
-    scaleFactor = bpy.props.FloatProperty(
+    scaleFactor : bpy.props.FloatProperty(
             name="Scale",
             description="Scale all data",
             min=0.01, max=1000.0,
@@ -1342,7 +1342,7 @@ class ExportMD5Mesh(bpy.types.Operator, ExportHelper):
     path_mode = path_reference_mode
     check_extension = True
     
-    reorientDegrees = bpy.props.EnumProperty(
+    reorientDegrees : bpy.props.EnumProperty(
         items= (('0', '0 Degrees', 'Do not reorient'),    
                 ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
                 ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
@@ -1351,7 +1351,7 @@ class ExportMD5Mesh(bpy.types.Operator, ExportHelper):
         description = "Degrees to rotate model during export.  Useful to reorient models to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
         default = '0')
 
-    scaleFactor = FloatProperty(
+    scaleFactor : FloatProperty(
             name="Scale",
             description="Scale all data",
             min=0.01, max=1000.0,
@@ -1402,7 +1402,7 @@ class ExportMD5Anim(bpy.types.Operator, ExportHelper):
     path_mode = path_reference_mode
     check_extension = True
     
-    reorientDegrees = bpy.props.EnumProperty(
+    reorientDegrees : bpy.props.EnumProperty(
         items= (('0', '0 Degrees', 'Do not reorient'),    
                 ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
                 ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
@@ -1505,7 +1505,7 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
             default=False,
             )
     
-    reorientDegrees = bpy.props.EnumProperty(
+    reorientDegrees : bpy.props.EnumProperty(
         items= (('0', '0 Degrees', 'Do not reorient'),    
                 ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
                 ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
@@ -1596,13 +1596,15 @@ class MessageBox(bpy.types.Operator):
     bl_idname = "message.messagebox"
     bl_label = ""
  
-    message = bpy.props.StringProperty(
+    message : bpy.props.StringProperty(
         name = "message",
         description = "message",
         default = ''
     )
     
-    message2 = bpy.props.StringProperty(
+    message2 
+	
+	StringProperty(
         name = "message2",
         description = "message2",
         default = ''
