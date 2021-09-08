@@ -1,3 +1,8 @@
+## About this fork
+This fork has been updated to support Blender 2.93+
+
+# Original Readme.md
+
 Blender-2.8-MD5-import-export-addon
 .MD5 model ( idTech 4 .md5mesh and .md5anim ) import/export addon for Blender 2.8. Supports batch import/export of .md5anim files as actions in Blender.
 
