@@ -959,33 +959,67 @@ class ImportMD5Mesh(bpy.types.Operator, ImportHelper):
     bl_label = 'Import MD5MESH'
     bl_options = {'PRESET'}
     filename_ext = ".md5mesh"
-    filter_glob = StringProperty(
-            default="*.md5mesh",
-            options={'HIDDEN'})
     path_mode = path_reference_mode
     check_extension = True
         
-    reorientDegrees = bpy.props.EnumProperty(
-            items= (('0', '0 Degrees', 'Do not reorient'),    
-                    ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
-                    ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
-                    ('180', '180 Degrees', 'Rotate 180 degrees')),
-            name = "Reorient Model",
-            description = "Degrees to rotate model during import.  Useful to reorient models to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
-            default = '0')
-                          
-    scaleFactor = bpy.props.FloatProperty(
-            name="Scale",
-            description="Scale all data",
-            min=0.01, max=1000.0,
-            soft_min=0.01,
-            soft_max=1000.0,
-            default=1.0)
-    boneLayer = bpy.props.IntProperty(
-            name="Bone Layer",
-            description="Bones will be assigned to this layer. If changed, remember that only bones in the layer defined in the 'Object Data Properties' of the armature will be exported, so make sure they match.",
-            min=1, max=32,
-            default = 5)
+    
+    if bpy.app.version < (2, 93):
+        
+        filter_glob = StringProperty(
+            default="*.md5mesh",
+            options={'HIDDEN'})
+        
+        reorientDegrees = bpy.props.EnumProperty(
+                items= (('0', '0 Degrees', 'Do not reorient'),    
+                        ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
+                        ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
+                        ('180', '180 Degrees', 'Rotate 180 degrees')),
+                name = "Reorient Model",
+                description = "Degrees to rotate model during import.  Useful to reorient models to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+                default = '0')
+                           
+        scaleFactor = bpy.props.FloatProperty(
+                name="Scale",
+                description="Scale all data",
+                min=0.01, max=1000.0,
+                soft_min=0.01,
+                soft_max=1000.0,
+                default=1.0)
+       
+        boneLayer = bpy.props.IntProperty(
+                name="Bone Layer",
+                description="Bones will be assigned to this layer. If changed, remember that only bones in the layer defined in the 'Object Data Properties' of the armature will be exported, so make sure they match.",
+                min=1, max=32,
+                default = 5)
+    else:
+        
+        filter_glob : StringProperty(
+            default="*.md5mesh",
+            options={'HIDDEN'})
+        
+        reorientDegrees : bpy.props.EnumProperty(
+                items= (('0', '0 Degrees', 'Do not reorient'),    
+                        ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
+                        ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
+                        ('180', '180 Degrees', 'Rotate 180 degrees')),
+                name = "Reorient Model",
+                description = "Degrees to rotate model during import.  Useful to reorient models to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+                default = '0')
+        
+        scaleFactor : bpy.props.FloatProperty(
+                name="Scale",
+                description="Scale all data",
+                min=0.01, max=1000.0,
+                soft_min=0.01,
+                soft_max=1000.0,
+                default=1.0)
+       
+        boneLayer : bpy.props.IntProperty(
+                name="Bone Layer",
+                description="Bones will be assigned to this layer. If changed, remember that only bones in the layer defined in the 'Object Data Properties' of the armature will be exported, so make sure they match.",
+                min=1, max=32,
+                default = 5)
+                
             
 
     path_mode = path_reference_mode
@@ -1016,9 +1050,12 @@ class MaybeImportMD5Anim(bpy.types.Operator):
              
         if ao:
             collection = ao.users_collection[0]
+            print("Using armature")
         else:
             collection = bpy.context.view_layer.active_layer_collection      
 
+        print(collection)
+        
         meshObjects = [o for o in bpy.data.collections[collection.name].objects
             if o.data in bpy.data.meshes[:] and o.find_armature()]
         
@@ -1045,71 +1082,138 @@ class ImportMD5Anim(bpy.types.Operator, ImportHelper):
     bl_label = 'Import MD5ANIM'
     bl_options = {'PRESET'}
     filename_ext = ".md5anim"
-    filter_glob = StringProperty(
-            default="*.md5anim",
-            options={'HIDDEN'})
-    
-    files = CollectionProperty(
-        name="MD5Anim files",
-        type=OperatorFileListElement,
-        )
-
-    directory = StringProperty(subtype='DIR_PATH')
-    
     
     path_mode = path_reference_mode
     check_extension = True
     check_extension = True
     #there must be an easier way to add a comment block to the import helper
-    md5info = StringProperty(
+    
+            
+    if bpy.app.version < (2, 93):
+        
+        md5info = StringProperty(
             name="",
             default=".MD5anim import",
             )
     
-    md5info1 = StringProperty(
-            name="",
-            default="Select one or more .md5anim files",
-            )
-    md5info2 = StringProperty(
-            name="",
-            default="to import as Blender actions.",
-            )
-    md5info3 = StringProperty(
-            name="",
-            default="(Batch import supported.)",
-            )
-    md5info4 = StringProperty(
-            name="",
-            default="After import, actions available",
-            )
-    md5info5 = StringProperty(
-            name="",
-            default="in the dopesheet action editor.",
-            )
+        md5info1 = StringProperty(
+                name="",
+                default="Select one or more .md5anim files",
+                )
+        md5info2 = StringProperty(
+                name="",
+                default="to import as Blender actions.",
+                )
+        md5info3 = StringProperty(
+                name="",
+                default="(Batch import supported.)",
+                )
+        md5info4 = StringProperty(
+                name="",
+                default="After import, actions available",
+                )
+        md5info5 = StringProperty(
+                name="",
+                default="in the dopesheet action editor.",
+                )
+                
+        prepend = BoolProperty(
+                name="Prepend action name",
+                description="Prepend the collection name to the animation name in the action editor. Necessary to bulk export actions and identify which actions are associated with which collection.",
+                default=True,
+                )
+                
+        filter_glob = StringProperty(
+            default="*.md5anim",
+            options={'HIDDEN'})
             
-    prepend = BoolProperty(
-            name="Prepend action name",
-            description="Prepend the collection name to the animation name in the action editor. Necessary to bulk export actions and identify which actions are associated with which collection.",
-            default=True,
+        files = CollectionProperty(
+            name = "MD5Anim files",
+            type = OperatorFileListElement,
             )
-            
-    reorientDegrees = bpy.props.EnumProperty(
-            items= (('0', '0 Degrees', 'Do not reorient'),    
-                    ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
-                    ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
-                    ('180', '180 Degrees', 'Rotate 180 degrees')),
-            name = "Reorient Animation",
-            description = "Degrees to rotate animation during import.  Useful to reorient to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
-            default = '0')
+
+        directory = StringProperty(subtype='DIR_PATH')
+ 
     
-    scaleFactor = bpy.props.FloatProperty(
-            name="Scale",
-            description="Scale all data",
-            min=0.01, max=1000.0,
-            soft_min=0.01,
-            soft_max=1000.0,
-            default=1.0)
+        reorientDegrees = bpy.props.EnumProperty(
+                items= (('0', '0 Degrees', 'Do not reorient'),    
+                        ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
+                        ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
+                        ('180', '180 Degrees', 'Rotate 180 degrees')),
+                name = "Reorient Animation",
+                description = "Degrees to rotate animation during import.  Useful to reorient to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+                default = '0')
+        
+        scaleFactor = bpy.props.FloatProperty(
+                name="Scale",
+                description="Scale all data",
+                min=0.01, max=1000.0,
+                soft_min=0.01,
+                soft_max=1000.0,
+                default=1.0)
+                
+    else:
+        
+        md5info : StringProperty(
+            name="",
+            default=".MD5anim import",
+            )
+    
+        md5info1 : StringProperty(
+                name="",
+                default="Select one or more .md5anim files",
+                )
+        md5info2 : StringProperty(
+                name="",
+                default="to import as Blender actions.",
+                )
+        md5info3 : StringProperty(
+                name="",
+                default="(Batch import supported.)",
+                )
+        md5info4 : StringProperty(
+                name="",
+                default="After import, actions available",
+                )
+        md5info5 : StringProperty(
+                name="",
+                default="in the dopesheet action editor.",
+                )
+                
+        prepend : BoolProperty(
+                name="Prepend action name",
+                description="Prepend the collection name to the animation name in the action editor. Necessary to bulk export actions and identify which actions are associated with which collection.",
+                default=True,
+                )
+  
+        filter_glob : StringProperty(
+            default="*.md5anim",
+            options={'HIDDEN'})
             
+        files : CollectionProperty(
+            name = "MD5Anim files",
+            type = OperatorFileListElement,
+            )
+
+        directory : StringProperty(subtype='DIR_PATH')
+
+        reorientDegrees : bpy.props.EnumProperty(
+                items= (('0', '0 Degrees', 'Do not reorient'),    
+                        ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
+                        ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
+                        ('180', '180 Degrees', 'Rotate 180 degrees')),
+                name = "Reorient Animation",
+                description = "Degrees to rotate animation during import.  Useful to reorient to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+                default = '0')
+        
+        scaleFactor : bpy.props.FloatProperty(
+                name="Scale",
+                description="Scale all data",
+                min=0.01, max=1000.0,
+                soft_min=0.01,
+                soft_max=1000.0,
+                default=1.0)
+                
             
     def execute(self, context):
         
@@ -1327,30 +1431,59 @@ class ExportMD5Mesh(bpy.types.Operator, ExportHelper):
     bl_label = 'Export MD5MESH'
     bl_options = {'PRESET'}
     filename_ext = ".md5mesh"
-    filter_glob = StringProperty(
-            default="*.md5mesh",
-            options={'HIDDEN'},
-            )
     path_mode = path_reference_mode
     check_extension = True
     
-    reorientDegrees = bpy.props.EnumProperty(
-        items= (('0', '0 Degrees', 'Do not reorient'),    
-                ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
-                ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
-                ('180', '180 Degrees', 'Rotate 180 degrees')),
-        name = "Reorient Model",
-        description = "Degrees to rotate model during export.  Useful to reorient models to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
-        default = '0')
-
-    scaleFactor = FloatProperty(
-            name="Scale",
-            description="Scale all data",
-            min=0.01, max=1000.0,
-            soft_min=0.01,
-            soft_max=1000.0,
-            default=1.0,
+    if bpy.app.version < (2, 93):
+    
+        filter_glob = StringProperty(
+            default="*.md5mesh",
+            options={'HIDDEN'},
             )
+ 
+        reorientDegrees = bpy.props.EnumProperty(
+            items= (('0', '0 Degrees', 'Do not reorient'),    
+                    ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
+                    ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
+                    ('180', '180 Degrees', 'Rotate 180 degrees')),
+            name = "Reorient Model",
+            description = "Degrees to rotate model during export.  Useful to reorient models to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+            default = '0')
+
+        scaleFactor = FloatProperty(
+                name="Scale",
+                description="Scale all data",
+                min=0.01, max=1000.0,
+                soft_min=0.01,
+                soft_max=1000.0,
+                default=1.0,
+                )
+                
+    else:
+        
+        filter_glob : StringProperty(
+            default="*.md5mesh",
+            options={'HIDDEN'},
+            )
+
+        reorientDegrees : bpy.props.EnumProperty(
+            items= (('0', '0 Degrees', 'Do not reorient'),    
+                    ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
+                    ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
+                    ('180', '180 Degrees', 'Rotate 180 degrees')),
+            name = "Reorient Model",
+            description = "Degrees to rotate model during export.  Useful to reorient models to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+            default = '0')
+
+        scaleFactor : FloatProperty(
+                name="Scale",
+                description="Scale all data",
+                min=0.01, max=1000.0,
+                soft_min=0.01,
+                soft_max=1000.0,
+                default=1.0,
+                )
+                
     path_mode = path_reference_mode
     check_extension = True
     
@@ -1377,23 +1510,26 @@ class ExportMD5Anim(bpy.types.Operator, ExportHelper):
     bl_label = 'Export MD5ANIM'
     bl_options = {'PRESET'}
     filename_ext = ".md5anim"
-    filter_glob = StringProperty(
-            default="*.md5anim",
-            options={'HIDDEN'},
-            )
     path_mode = path_reference_mode
     check_extension = True
     
-    reorientDegrees = bpy.props.EnumProperty(
-        items= (('0', '0 Degrees', 'Do not reorient'),    
+    if bpy.app.version < (2, 93):
+        
+        filter_glob = StringProperty(
+            default="*.md5anim",
+            options={'HIDDEN'},
+            )
+
+        reorientDegrees = bpy.props.EnumProperty(
+            items= (('0', '0 Degrees', 'Do not reorient'),    
                 ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
                 ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
                 ('180', '180 Degrees', 'Rotate 180 degrees')),
-        name = "Reorient Anim",
-        description = "Degrees to rotate animation during export.  Useful to reorient animations to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
-        default = '0')
+            name = "Reorient Anim",
+            description = "Degrees to rotate animation during export.  Useful to reorient animations to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+            default = '0')
         
-    scaleFactor = FloatProperty(
+        scaleFactor = FloatProperty(
             name="Scale",
             description="Scale all data",
             min=0.01, max=1000.0,
@@ -1401,11 +1537,43 @@ class ExportMD5Anim(bpy.types.Operator, ExportHelper):
             soft_max=1000.0,
             default=1.0,
             )
-    previewKeysOnly = BoolProperty(
+        previewKeysOnly = BoolProperty(
             name="Use timeline Start/End frames.",
             description="Only export frames indicated by timeline preview 'Start' and 'End' frames values - otherwise all action frames will be exported.",
             default=False,
             )
+                 
+    else:
+    
+        filter_glob : StringProperty(
+            default="*.md5anim",
+            options={'HIDDEN'},
+            )
+
+        reorientDegrees : bpy.props.EnumProperty(
+            items= (('0', '0 Degrees', 'Do not reorient'),    
+                    ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
+                    ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
+                    ('180', '180 Degrees', 'Rotate 180 degrees')),
+            name = "Reorient Anim",
+            description = "Degrees to rotate animation during export.  Useful to reorient animations to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+            default = '0')
+            
+        scaleFactor : FloatProperty(
+                name="Scale",
+                description="Scale all data",
+                min=0.01, max=1000.0,
+                soft_min=0.01,
+                soft_max=1000.0,
+                default=1.0,
+                )
+        previewKeysOnly : BoolProperty(
+                name="Use timeline Start/End frames.",
+                description="Only export frames indicated by timeline preview 'Start' and 'End' frames values - otherwise all action frames will be exported.",
+                default=False,
+                )
+    
+    
     path_mode = path_reference_mode
     check_extension = True
     
@@ -1450,53 +1618,99 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
     bl_idname = "export_scene.md5batch"
     bl_label = 'Export MD5 Files'
     bl_options = {'PRESET'}
-   
     filename_ext = ".md5mesh"
-    filter_glob = StringProperty(
-            default="*.md5mesh",
-            options={'HIDDEN'},
-            )
-   
     path_mode = path_reference_mode
     check_extension = True
     
    
-    exportAllAnims = BoolProperty(
-            name="Export All Anims",
-            description="""Export all actions associated with the object/collection as MD5 anims.
-All keyframes for each action will be exported.
-( This exports all actions in the action editor that are prepended with the object/collection name. )""",
-            default=False,
+    if bpy.app.version < (2, 93):
+        
+        filter_glob = StringProperty(
+            default="*.md5mesh",
+            options={'HIDDEN'},
             )
-    stripPrepend = BoolProperty(
-            name="Strip action name prepend",
-            description="Strip the prepended collection name from exported action names.",
-            default=True,
-            )
-    previewKeysOnly = BoolProperty(
-            name="Use timeline Start/End frames",
-            description="""Only export frames indicated by timeline preview 'Start' and 'End' frames values 
-- otherwise all action frames will be exported.  Has no effect if 'Export All Anims' is selected.""",
-            default=False,
-            )
-    
-    reorientDegrees = bpy.props.EnumProperty(
-        items= (('0', '0 Degrees', 'Do not reorient'),    
-                ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
-                ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
-                ('180', '180 Degrees', 'Rotate 180 degrees')),
-        name = "Reorient Model/Anims",
-        description = "Degrees to rotate model/anims during export.  Useful to reorient to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
-        default = '0')
 
-    scaleFactor = FloatProperty(
-            name="Scale",
-            description="Scale all data",
-            min=0.01, max=1000.0,
-            soft_min=0.01,
-            soft_max=1000.0,
-            default=1.0,
+        exportAllAnims = BoolProperty(
+                name="Export All Anims",
+                description="""Export all actions associated with the object/collection as MD5 anims.
+    All keyframes for each action will be exported.
+    ( This exports all actions in the action editor that are prepended with the object/collection name. )""",
+                default=False,
+                )
+        stripPrepend = BoolProperty(
+                name="Strip action name prepend",
+                description="Strip the prepended collection name from exported action names.",
+                default=True,
+                )
+        previewKeysOnly = BoolProperty(
+                name="Use timeline Start/End frames",
+                description="""Only export frames indicated by timeline preview 'Start' and 'End' frames values 
+    - otherwise all action frames will be exported.  Has no effect if 'Export All Anims' is selected.""",
+                default=False,
+                )
+        
+        reorientDegrees = bpy.props.EnumProperty(
+            items= (('0', '0 Degrees', 'Do not reorient'),    
+                    ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
+                    ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
+                    ('180', '180 Degrees', 'Rotate 180 degrees')),
+            name = "Reorient Model/Anims",
+            description = "Degrees to rotate model/anims during export.  Useful to reorient to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+            default = '0')
+
+        scaleFactor = FloatProperty(
+                name="Scale",
+                description="Scale all data",
+                min=0.01, max=1000.0,
+                soft_min=0.01,
+                soft_max=1000.0,
+                default=1.0,
+                )
+    else:
+        
+        filter_glob : StringProperty(
+            default="*.md5mesh",
+            options={'HIDDEN'},
             )
+        exportAllAnims : BoolProperty(
+                name="Export All Anims",
+                description="""Export all actions associated with the object/collection as MD5 anims.
+    All keyframes for each action will be exported.
+    ( This exports all actions in the action editor that are prepended with the object/collection name. )""",
+                default=False,
+                )
+        stripPrepend : BoolProperty(
+                name="Strip action name prepend",
+                description="Strip the prepended collection name from exported action names.",
+                default=True,
+                )
+        previewKeysOnly : BoolProperty(
+                name="Use timeline Start/End frames",
+                description="""Only export frames indicated by timeline preview 'Start' and 'End' frames values 
+    - otherwise all action frames will be exported.  Has no effect if 'Export All Anims' is selected.""",
+                default=False,
+                )
+        
+        reorientDegrees : bpy.props.EnumProperty(
+            items= (('0', '0 Degrees', 'Do not reorient'),    
+                    ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
+                    ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
+                    ('180', '180 Degrees', 'Rotate 180 degrees')),
+            name = "Reorient Model/Anims",
+            description = "Degrees to rotate model/anims during export.  Useful to reorient to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
+            default = '0')
+
+        scaleFactor : FloatProperty(
+                name="Scale",
+                description="Scale all data",
+                min=0.01, max=1000.0,
+                soft_min=0.01,
+                soft_max=1000.0,
+                default=1.0,
+                )
+
+        
+        
     path_mode = path_reference_mode
     check_extension = True
     
@@ -1571,17 +1785,35 @@ class MessageBox(bpy.types.Operator):
     bl_idname = "message.messagebox"
     bl_label = ""
  
-    message = bpy.props.StringProperty(
-        name = "message",
-        description = "message",
-        default = ''
-    )
+    if bpy.app.version < (2, 93):
     
-    message2 = bpy.props.StringProperty(
-        name = "message2",
-        description = "message2",
-        default = ''
-    ) 
+        message = bpy.props.StringProperty(
+            name = "message",
+            description = "message",
+            default = ''
+        )
+        
+        message2 = bpy.props.StringProperty(
+            name = "message2",
+            description = "message2",
+            default = ''
+        ) 
+    
+    else:
+    
+        message : bpy.props.StringProperty(
+            name = "message",
+            description = "message",
+            default = ''
+        )
+        
+        message2 : bpy.props.StringProperty(
+            name = "message2",
+            description = "message2",
+            default = ''
+        ) 
+
+        
  
     def execute(self, context):
         self.report({'INFO'}, self.message)
