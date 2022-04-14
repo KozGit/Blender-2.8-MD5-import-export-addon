@@ -1,10 +1,10 @@
 Blender-2.8-MD5-import-export-addon
-.MD5 model ( idTech 4 .md5mesh and .md5anim ) import/export addon for Blender 2.8. Supports batch import/export of .md5anim files as actions in Blender.
+.MD5 model ( idTech 4 .md5mesh and .md5anim ) import/export addon for Blender 2.8 thru Blender 3.1.2. Supports batch import/export of .md5anim files as actions in Blender.
 
 Based on the io_scene_md5.py script by nemyax.
 
 
-# MD5 Importer/Exporter for Blender 2.80+
+# MD5 Importer/Exporter for Blender 2.80 thru Blender 3.1.2
 
 ## SECTIONS:
 Installation
