@@ -1651,31 +1651,29 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
     check_extension = True
     
    
-<<<<<<< HEAD
     if bpy.app.version < (2, 93):
         
         filter_glob = StringProperty(
             default="*.md5mesh",
             options={'HIDDEN'},
             )
-=======
-    exportAllAnims = BoolProperty(
+        exportAllAnims = BoolProperty(
             name="Export All Anims",
             description="""Export all actions associated with the object/collection as MD5 anims.\n All keyframes for each action will be exported.\n ( This exports all actions in the action editor that are prepended with the object/collection name. )""",
             default=False,
             )
-    stripPrepend = BoolProperty(
+        stripPrepend = BoolProperty(
             name="Strip action name prepend",
             description="Strip the prepended collection name from exported action names.",
             default=True,
             )
-    previewKeysOnly = BoolProperty(
+        previewKeysOnly = BoolProperty(
             name="Use timeline Start/End frames",
             description="""Only export frames indicated by timeline preview 'Start' and 'End' frames values \n - otherwise all action frames will be exported.  Has no effect if 'Export All Anims' is selected.""",
             default=False,
             )
     
-    reorientDegrees = bpy.props.EnumProperty(
+        reorientDegrees = bpy.props.EnumProperty(
         items= (('0', '0 Degrees', 'Do not reorient'),    
                 ('90', '90 Degrees ( X to Y )', 'Rotate 90 degrees (e.g. reorient facing +X to facing +Y)'),    
                 ('-90', '-90 Degrees ( Y to X )', 'Rotate -90 degrees (e.g. reorient facing +Y to facing +X' ),    
@@ -1683,8 +1681,7 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
         name = "Reorient Model/Anims",
         description = "Degrees to rotate model/anims during export.  Useful to reorient to face Y axis if desired. 90 Degrees rotates clockwise from above. -90 Rotates counter-clockwise from above.",
         default = '0')
->>>>>>> 4cd0d75b5404620b28005264687d4566082bde7e
-
+    
         exportAllAnims = BoolProperty(
                 name="Export All Anims",
                 description="""Export all actions associated with the object/collection as MD5 anims.
