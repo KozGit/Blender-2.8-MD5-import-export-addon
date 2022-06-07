@@ -289,6 +289,11 @@ Specify the file path and complete the export.
 	  
         ◦ All frames in the actions will be exported.
 	
+  • Prepended Action Names Only
+    
+        ◦ If enabled, only export actions with names that are prepended with the collection name.
+	  Disabled by default.
+
   • Strip action name prepend
     
         ◦ If enabled, collection name prefixes are removed from the exported file names. (e.g. 
