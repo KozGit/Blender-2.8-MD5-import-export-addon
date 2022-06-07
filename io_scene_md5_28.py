@@ -1,7 +1,7 @@
 bl_info = {
     "name": "id tech 4 MD5 format",
     "author": "nemyax, 2.8 Update: Samson",
-    "version": (1, 8, 20190523),
+    "version": (1, 9, 20220606),
     "blender": (2, 80, 0),
     "location": "File > Import-Export",
     "description": "Import and export md5mesh and md5anim",
@@ -1662,6 +1662,11 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
             description="""Export all actions associated with the object/collection as MD5 anims.\n All keyframes for each action will be exported.\n ( This exports all actions in the action editor that are prepended with the object/collection name. )""",
             default=False,
             )
+        onlyPrepend = BoolProperty(
+            name="Prepended action names only",
+            description="Only export actions prepended with the collection name.",
+            default=False,
+            )
         stripPrepend = BoolProperty(
             name="Strip action name prepend",
             description="Strip the prepended collection name from exported action names.",
@@ -1687,6 +1692,11 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
                 description="""Export all actions associated with the object/collection as MD5 anims.
     All keyframes for each action will be exported.
     ( This exports all actions in the action editor that are prepended with the object/collection name. )""",
+                default=False,
+                )
+        onlyPrepend = BoolProperty(
+                name="Prepended action names only",
+                description="Only export actions prepended with the collection name.",
                 default=False,
                 )
         stripPrepend = BoolProperty(
@@ -1729,6 +1739,11 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
                 description="""Export all actions associated with the object/collection as MD5 anims.
     All keyframes for each action will be exported.
     ( This exports all actions in the action editor that are prepended with the object/collection name. )""",
+                default=False,
+                )
+        onlyPrepend : BoolProperty(
+                name="Prepended action names only",
+                description="Only export actions prepended with the collection name.",
                 default=False,
                 )
         stripPrepend : BoolProperty(
@@ -1816,7 +1831,7 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
                 name = exportAction.name
                 frame_range = exportAction.frame_range
                 print("Checking actino name " + name + " to see if in collection " + collection_Prefix)
-                if name.startswith(collection_Prefix):
+                if name.startswith(collection_Prefix) or not self.onlyPrepend :
                     #export this action
                     armature.animation_data.action = exportAction                   
                     if self.stripPrepend:
