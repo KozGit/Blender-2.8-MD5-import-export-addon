@@ -1,7 +1,7 @@
 bl_info = {
     "name": "id tech 4 MD5 format",
     "author": "nemyax, 2.8 Update: Samson",
-    "version": (1, 9, 20220606),
+    "version": (1, 9, 20220921),
     "blender": (2, 80, 0),
     "location": "File > Import-Export",
     "description": "Import and export md5mesh and md5anim",
@@ -149,8 +149,9 @@ def do_mesh(md5mesh, s_re, v_re, t_re, w_re, e_re, n_re, ms):
     for t in ts:
         bm.verts.ensure_lookup_table()
         tvs = [bm.verts[a] for a in map(int, t[1:])]
+        tvy = tvs
         try:
-            new_f = bm.faces.new(tvs)
+            new_f = bm.faces.new([tvy[2],tvy[0],tvy[1]]) # fix windings for eyedeform issue
             new_f.normal_flip() #seems normals need to be flipped for 2.8
         except:
             continue
@@ -567,7 +568,7 @@ def make_joints_block(bones, boneIndexLookup, correctionMatrix):
     block.append("\n")
     return block
 
-def make_mesh_block(obj, bones, correctionMatrix):
+def make_mesh_block(obj, bones, correctionMatrix, fixWindings):
     shaderName = "default"
     ms = obj.material_slots
     if ms:
@@ -582,15 +583,19 @@ def make_mesh_block(obj, bones, correctionMatrix):
     block = []
     block.append("mesh {\n")
     block.append("  shader \"{}\"\n".format(shaderName))
-    block.append("  numverts {}\n".format(len(verts)))
+    block.append("\n  numverts {}\n".format(len(verts)))
     for v in verts:
         block.append(\
         "  vert {} ( {:.10f} {:.10f} ) {} {}\n".\
         format(v[0], v[1], v[2], v[3], v[4]))
-    block.append("  numtris {}\n".format(len(tris)))
+    block.append("\n  numtris {}\n".format(len(tris)))
     for t in tris:
-        block.append("  tri {} {} {} {}\n".format(t[0], t[1], t[2], t[3]))
-    block.append("  numweights {}\n".format(len(weights)))
+        if fixWindings:
+            block.append("  tri {} {} {} {}\n".format(t[0], t[3], t[1], t[2])) # fix windings - current blender windings break eyeDeform in D3 materials
+        else:
+            block.append("  tri {} {} {} {}\n".format(t[0], t[1], t[2], t[3]))
+        
+    block.append("\n  numweights {}\n".format(len(weights)))
     for w in weights:
         block.append(\
         "  weight {} {} {:.10f} ( {:.10f} {:.10f} {:.10f} )\n".\
@@ -635,7 +640,7 @@ def triangulate(bm):
     bmesh.ops.triangulate(bm, faces=nonTris)
     return bm
 
-def write_md5mesh(filePath, prerequisites, correctionMatrix):
+def write_md5mesh(filePath, prerequisites, correctionMatrix, fixWindings):
     bones, meshObjects = prerequisites
     boneIndexLookup = {}
     for b in bones:
@@ -643,7 +648,7 @@ def write_md5mesh(filePath, prerequisites, correctionMatrix):
     md5joints = make_joints_block(bones, boneIndexLookup, correctionMatrix)
     md5meshes = []
     for mo in meshObjects:
-        md5meshes.append(make_mesh_block(mo, bones, correctionMatrix))
+        md5meshes.append(make_mesh_block(mo, bones, correctionMatrix, fixWindings))
     f = open(filePath, 'w')
     lines = []
     lines.append("MD5Version 10" + record_parameters(correctionMatrix) + "\n")
@@ -1466,6 +1471,13 @@ class ExportMD5Mesh(bpy.types.Operator, ExportHelper):
                 soft_max=1000.0,
                 default=1.0,
                 )
+
+        fixWindings = BoolProperty(
+                name="Fix tri indices for eye deform",
+                description="Only select if having issues with materials flagged with eyeDeform",
+                default=False
+                )
+ 
                 
     else:
         
@@ -1490,6 +1502,11 @@ class ExportMD5Mesh(bpy.types.Operator, ExportHelper):
                 soft_min=0.01,
                 soft_max=1000.0,
                 default=1.0,
+                )
+        fixWindings : BoolProperty(
+                name="Fix tri indices for eye deform",
+                description="Only select if having issues with materials flagged with eyeDeform",
+                default=False
                 )
                 
     path_mode = path_reference_mode
@@ -1518,7 +1535,7 @@ class ExportMD5Mesh(bpy.types.Operator, ExportHelper):
         orientationTweak = mu.Matrix.Rotation(math.radians( rotdeg ),4,'Z')
         scaleTweak = mu.Matrix.Scale(self.scaleFactor, 4)
         correctionMatrix = orientationTweak @ scaleTweak
-        write_md5mesh(self.filepath, prerequisites, correctionMatrix)
+        write_md5mesh(self.filepath, prerequisites, correctionMatrix, self.fixWindings)
         return {'FINISHED'}
 
 class ExportMD5Anim(bpy.types.Operator, ExportHelper):
@@ -1741,11 +1758,13 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
     ( This exports all actions in the action editor that are prepended with the object/collection name. )""",
                 default=False,
                 )
+
         onlyPrepend : BoolProperty(
                 name="Prepended action names only",
                 description="Only export actions prepended with the collection name.",
                 default=False,
                 )
+
         stripPrepend : BoolProperty(
                 name="Strip action name prepend",
                 description="Strip the prepended collection name from exported action names.",
