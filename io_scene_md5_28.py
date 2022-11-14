@@ -94,7 +94,9 @@ def read_md5mesh(path, matrix, mergeVertices, boneLayer):
     arm_o, ms = do_joints(md5mesh, j_re, e_re, matrix,meshName,collection,boneLayer)
     pairs = []
     while md5mesh:
-        mat_name, bm = do_mesh(md5mesh, s_re, v_re, t_re, w_re, e_re, n_re, ms, mergeVertices)
+        mat_name, bm = do_mesh(md5mesh, s_re, v_re, t_re, w_re, e_re, n_re, ms)
+        if mergeVertices > 0.00:
+            bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=mergeVertices)
         pairs.append((mat_name, bm))
         skip_until(m_re, md5mesh)
     for mat_name, bm in pairs:
@@ -127,7 +129,7 @@ def read_md5mesh(path, matrix, mergeVertices, boneLayer):
         bpy.ops.object.mode_set()
         bpy.context.view_layer.objects.active = oldactive
 
-def do_mesh(md5mesh, s_re, v_re, t_re, w_re, e_re, n_re, ms, mergeVertices):
+def do_mesh(md5mesh, s_re, v_re, t_re, w_re, e_re, n_re, ms):
     bm = bmesh.new()
     mat_name = gather(s_re, n_re, md5mesh)[0][0]
     vs, ts, ws = gather_multi([v_re, t_re, w_re], e_re, md5mesh)
@@ -160,8 +162,6 @@ def do_mesh(md5mesh, s_re, v_re, t_re, w_re, e_re, n_re, ms, mergeVertices):
             ln = [l for l in new_f.loops if l.vert == vn][0]
             u0, v0 = map(float, vs[vn.index][1:3])
             ln[uvs].uv = (u0, 1.0 - v0)
-    if mergeVertices > 0.00:
-        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=mergeVertices)
     return mat_name, bm
 
 def do_joints(md5mesh, j_re, e_re, correctMatrix,meshName,collection,boneLayer):
