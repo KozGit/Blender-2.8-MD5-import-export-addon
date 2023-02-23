@@ -1,7 +1,7 @@
 bl_info = {
     "name": "id tech 4 MD5 format",
     "author": "nemyax, 2.8 Update: Samson",
-    "version": (1, 9, 20220921),
+    "version": (1, 9, 20230223),
     "blender": (2, 80, 0),
     "location": "File > Import-Export",
     "description": "Import and export md5mesh and md5anim",
@@ -1745,6 +1745,13 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
                 soft_max=1000.0,
                 default=1.0,
                 )
+                
+        fixWindings = BoolProperty(
+        name="Fix tri indices for eye deform",
+        description="Only select if having issues with materials flagged with eyeDeform",
+        default=False
+        )
+        
     else:
         
         filter_glob : StringProperty(
@@ -1794,9 +1801,13 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
                 soft_max=1000.0,
                 default=1.0,
                 )
-
-        
-        
+                
+        fixWindings : BoolProperty(
+        name="Fix tri indices for eye deform",
+        description="Only select if having issues with materials flagged with eyeDeform",
+        default=False
+        )
+       
     path_mode = path_reference_mode
     check_extension = True
     
@@ -1828,7 +1839,7 @@ class ExportMD5Batch(bpy.types.Operator, ExportHelper):
         collection_Prefix = "("+collection.name+")_"
                
         #write the mesh
-        write_md5mesh(self.filepath, prerequisites, correctionMatrix)
+        write_md5mesh(self.filepath, prerequisites, correctionMatrix, self.fixWindings )
                 
         if not self.exportAllAnims:
             #write the active action
