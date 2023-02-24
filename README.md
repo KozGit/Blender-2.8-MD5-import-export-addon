@@ -4,7 +4,7 @@ Blender-2.8-MD5-import-export-addon
 Based on the io_scene_md5.py script by nemyax.
 
 
-# MD5 Importer/Exporter for Blender 2.80 thru Blender 3.1.2
+# MD5 Importer/Exporter for Blender 2.80 thru Blender 3.4
 
 ## SECTIONS:
 Installation
@@ -151,6 +151,10 @@ If the reserve layer has been changed during import, or to select a different la
   • Scale
     
         ◦ Adjust the scale for all elements in the model
+
+  • Merge Vertices 
+    
+        ◦ Automatically weld near vertices ( merge by distance ) Value is in centimetres. ( 0.0 = Default Disabled )
 	
   • Bone layer
     
@@ -216,6 +220,10 @@ will attempt to import all selected .md5anim files and provide a status report w
   • Scale
   
         ◦ Adjust the scale for all elements in the animation
+		
+  • Fix tri indices for eye deform
+  
+        ◦ Normally not needed.  Only for use with specific eye meshes using eye textures ( texture flagged as 'eyeDeform' in material ) not rendering correctly in engine.
                                   
 
  Specify the file path and complete the export.
@@ -322,7 +330,7 @@ Specify the file path for the .md5mesh and complete the export.  The animation(s
 
 ### Handling Shaders
 
-When exporting .md5mesh files, the add-on assigns the shader for a mesh in the .md5mesh file the name of the material assigned to that mesh in Blender. The composition of the material itself doesn’t matter, only the name of the material is used.
+When exporting .md5mesh files, the add-on assigns each mesh in the .md5mesh file a shader using the name of the material assigned to that mesh in Blender. The composition of the material itself doesn’t matter, only the name of the material is used.
 
 During export, the exact material name from the first non-empty material slot for the mesh is used as the shader name. If there are no materials on a mesh, the name “default” is exported.
 

@@ -1003,11 +1003,11 @@ class ImportMD5Mesh(bpy.types.Operator, ImportHelper):
        
         mergeVerticesCM = bpy.props.FloatProperty(
                 name="Merge Vertices",
-                description="Automatically weld near vertices (in centimetres).",
+                description="Automatically weld near vertices (in centimetres). ( 0.0 = Default Disabled )",
                 min=0.00, max=1.00,
                 soft_min=0.00,
                 soft_max=1.00,
-                default=0.01)
+                default=0.00)
        
         boneLayer = bpy.props.IntProperty(
                 name="Bone Layer",
@@ -1039,11 +1039,11 @@ class ImportMD5Mesh(bpy.types.Operator, ImportHelper):
        
         mergeVerticesCM : bpy.props.FloatProperty(
                 name="Merge Vertices",
-                description="Automatically weld near vertices (in centimetres).",
+                description="Automatically weld near vertices (in centimetres). ( 0.0 = Default Disabled ) ",
                 min=0.00, max=1.00,
                 soft_min=0.00,
                 soft_max=1.00,
-                default=0.01)
+                default=0.00)
        
         boneLayer : bpy.props.IntProperty(
                 name="Bone Layer",
