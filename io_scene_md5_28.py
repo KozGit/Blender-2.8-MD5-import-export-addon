@@ -1,7 +1,7 @@
 bl_info = {
     "name": "id tech 4 MD5 format",
     "author": "nemyax, 2.8 Update: Samson",
-    "version": (1, 9, 20230223),
+    "version": (1, 10, 20240223),
     "blender": (2, 80, 0),
     "location": "File > Import-Export",
     "description": "Import and export md5mesh and md5anim",
