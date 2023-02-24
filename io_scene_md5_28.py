@@ -67,7 +67,7 @@ def compat(major, minor, rev):
 
 ### .md5mesh import
 
-def read_md5mesh(path, matrix, boneLayer):
+def read_md5mesh(path, matrix, mergeVertices, boneLayer):
     meshName = path.split(os.sep)[-1].split(".")[-2]
     collection = bpy.data.collections.new(meshName)
     bpy.context.scene.collection.children.link(collection)
@@ -95,6 +95,8 @@ def read_md5mesh(path, matrix, boneLayer):
     pairs = []
     while md5mesh:
         mat_name, bm = do_mesh(md5mesh, s_re, v_re, t_re, w_re, e_re, n_re, ms)
+        if mergeVertices > 0.00:
+            bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=mergeVertices)
         pairs.append((mat_name, bm))
         skip_until(m_re, md5mesh)
     for mat_name, bm in pairs:
@@ -999,6 +1001,14 @@ class ImportMD5Mesh(bpy.types.Operator, ImportHelper):
                 soft_max=1000.0,
                 default=1.0)
        
+        mergeVerticesCM = bpy.props.FloatProperty(
+                name="Merge Vertices",
+                description="Automatically weld near vertices (in centimetres).",
+                min=0.00, max=1.00,
+                soft_min=0.00,
+                soft_max=1.00,
+                default=0.01)
+       
         boneLayer = bpy.props.IntProperty(
                 name="Bone Layer",
                 description="Bones will be assigned to this layer. If changed, remember that only bones in the layer defined in the 'Object Data Properties' of the armature will be exported, so make sure they match.",
@@ -1027,6 +1037,14 @@ class ImportMD5Mesh(bpy.types.Operator, ImportHelper):
                 soft_max=1000.0,
                 default=1.0)
        
+        mergeVerticesCM : bpy.props.FloatProperty(
+                name="Merge Vertices",
+                description="Automatically weld near vertices (in centimetres).",
+                min=0.00, max=1.00,
+                soft_min=0.00,
+                soft_max=1.00,
+                default=0.01)
+       
         boneLayer : bpy.props.IntProperty(
                 name="Bone Layer",
                 description="Bones will be assigned to this layer. If changed, remember that only bones in the layer defined in the 'Object Data Properties' of the armature will be exported, so make sure they match.",
@@ -1045,7 +1063,7 @@ class ImportMD5Mesh(bpy.types.Operator, ImportHelper):
         scaleTweak = mu.Matrix.Scale(self.scaleFactor, 4)
         correctionMatrix = orientationTweak @ scaleTweak
         bpy.context.scene.md5_bone_layer=self.boneLayer         
-        read_md5mesh(self.filepath, correctionMatrix,self.boneLayer-1)
+        read_md5mesh(self.filepath, correctionMatrix, self.mergeVerticesCM * 0.01, self.boneLayer-1)
         return {'FINISHED'}
 
 class MaybeImportMD5Anim(bpy.types.Operator):
