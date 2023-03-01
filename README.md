@@ -257,6 +257,12 @@ will attempt to import all selected .md5anim files and provide a status report w
   • Use timeline Start/End Frames
   	
 	◦ Select this to only export the frames indicated by the timeline/dopesheet ;Start’ and ‘End’ frame fields.
+	
+  • Baseframe = 1st anim frame ( default = checked ) 
+  	
+	◦ Use the pose values from the 1st animation frame to generate the base frame. ( Otherwise use bone defaults
+	  which can cause issues if compressing the anims )
+
 
 
 
@@ -311,6 +317,11 @@ Specify the file path and complete the export.
     
         ◦ Select this to only export the frames indicated by the timeline/dopesheet ;Start’ and
 	  ‘End’ frame fields. Has no effect if ‘Export All Anims’ is selected.
+	  
+  • Baseframe = 1st anim frame ( default = checked ) 
+  	
+	◦ Use the pose values from the 1st animation frame to generate the base frame. ( Otherwise use bone defaults
+	  which can cause issues if compressing the anims )
 	  
   • Reorient Model 
     
